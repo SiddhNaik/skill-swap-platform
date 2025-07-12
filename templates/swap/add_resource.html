@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Resource - Skill Swap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-plus me-2"></i>Add Resource
+                </h3>
+                <p class="text-muted mb-0">Share a helpful resource for a skill</p>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:</h6>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.skill.id_for_label }}" class="form-label">
+                            <i class="fas fa-lightbulb me-2"></i>Skill
+                        </label>
+                        {{ form.skill }}
+                        {% if form.skill.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.skill.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">
+                            <i class="fas fa-tag me-2"></i>Title
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.title.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.url.id_for_label }}" class="form-label">
+                            <i class="fas fa-link me-2"></i>URL
+                        </label>
+                        {{ form.url }}
+                        {% if form.url.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.url.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i>Add Resource
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Home
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+</style>
+{% endblock %} 

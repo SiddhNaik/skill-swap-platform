@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Swap Request - Skill Swap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-exchange-alt me-2"></i>Create Swap Request
+                </h3>
+                <p class="text-muted mb-0">Propose a skill exchange with another user</p>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:</h6>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.receiver.id_for_label }}" class="form-label">
+                            <i class="fas fa-user me-2"></i>Select User
+                        </label>
+                        {{ form.receiver }}
+                        {% if form.receiver.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.receiver.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.skill_offered.id_for_label }}" class="form-label">
+                                    <i class="fas fa-gift me-2"></i>Skill You're Offering
+                                </label>
+                                {{ form.skill_offered }}
+                                {% if form.skill_offered.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.skill_offered.errors %}
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.skill_requested.id_for_label }}" class="form-label">
+                                    <i class="fas fa-hand-holding-heart me-2"></i>Skill You Want
+                                </label>
+                                {{ form.skill_requested }}
+                                {% if form.skill_requested.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.skill_requested.errors %}
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.message.id_for_label }}" class="form-label">
+                            <i class="fas fa-comment me-2"></i>Message
+                        </label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.message.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Introduce yourself and explain what you hope to learn and teach.
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i>Send Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Home
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+</style>
+
+<script>
+    // Auto-select skill if passed in URL
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const skillId = urlParams.get('skill');
+        if (skillId) {
+            const skillRequestedSelect = document.getElementById('{{ form.skill_requested.id_for_label }}');
+            if (skillRequestedSelect) {
+                skillRequestedSelect.value = skillId;
+            }
+        }
+    });
+</script>
+{% endblock %} 

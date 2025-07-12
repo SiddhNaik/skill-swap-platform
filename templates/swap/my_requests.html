@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}My Requests - Skill Swap{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-list me-2"></i>My Swap Requests
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Sent Requests -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-paper-plane me-2"></i>Sent Requests
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for request in sent %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i class="fas fa-user me-2"></i>{{ request.receiver.username }}
+                                    </h6>
+                                    <p class="text-muted mb-0">
+                                        <small>
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ request.created_at|date:"M d, Y" }}
+                                        </small>
+                                    </p>
+                                </div>
+                                <span class="status-badge status-{{ request.status }}">
+                                    {{ request.status|title }}
+                                </span>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <div class="text-center p-2 bg-light rounded">
+                                        <small class="text-muted">You Offer</small>
+                                        <div class="skill-badge">{{ request.skill_offered.name }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-2 bg-light rounded">
+                                        <small class="text-muted">You Want</small>
+                                        <div class="skill-badge">{{ request.skill_requested.name }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {% if request.message %}
+                                <div class="mb-3">
+                                    <small class="text-muted">Message:</small>
+                                    <p class="mb-0">{{ request.message }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if request.status == 'pending' %}
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="cancelRequest({{ request.id }})">
+                                        <i class="fas fa-times me-1"></i>Cancel
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">No sent requests yet</h6>
+                        <p class="text-muted">Start by creating a new swap request!</p>
+                        <a href="{% url 'create_swap' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i>Create Request
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Received Requests -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-inbox me-2"></i>Received Requests
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for request in received %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h6 class="mb-1">
+                                        <i class="fas fa-user me-2"></i>{{ request.sender.username }}
+                                    </h6>
+                                    <p class="text-muted mb-0">
+                                        <small>
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ request.created_at|date:"M d, Y" }}
+                                        </small>
+                                    </p>
+                                </div>
+                                <span class="status-badge status-{{ request.status }}">
+                                    {{ request.status|title }}
+                                </span>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <div class="text-center p-2 bg-light rounded">
+                                        <small class="text-muted">They Offer</small>
+                                        <div class="skill-badge">{{ request.skill_offered.name }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-2 bg-light rounded">
+                                        <small class="text-muted">They Want</small>
+                                        <div class="skill-badge">{{ request.skill_requested.name }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {% if request.message %}
+                                <div class="mb-3">
+                                    <small class="text-muted">Message:</small>
+                                    <p class="mb-0">{{ request.message }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if request.status == 'pending' %}
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-success" onclick="acceptRequest({{ request.id }})">
+                                        <i class="fas fa-check me-1"></i>Accept
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="rejectRequest({{ request.id }})">
+                                        <i class="fas fa-times me-1"></i>Reject
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">No received requests yet</h6>
+                        <p class="text-muted">When someone sends you a swap request, it will appear here.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function acceptRequest(requestId) {
+        if (confirm('Are you sure you want to accept this swap request?')) {
+            // You would implement this with AJAX or a form submission
+            window.location.href = `/accept_request/${requestId}/`;
+        }
+    }
+    
+    function rejectRequest(requestId) {
+        if (confirm('Are you sure you want to reject this swap request?')) {
+            // You would implement this with AJAX or a form submission
+            window.location.href = `/reject_request/${requestId}/`;
+        }
+    }
+    
+    function cancelRequest(requestId) {
+        if (confirm('Are you sure you want to cancel this swap request?')) {
+            // You would implement this with AJAX or a form submission
+            window.location.href = `/cancel_request/${requestId}/`;
+        }
+    }
+</script>
+{% endblock %} 

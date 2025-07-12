@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Skill Swap{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="hero-title">Welcome to Skill Swap</h1>
+    <p class="hero-subtitle">Connect with others, share your skills, and learn something new</p>
+    {% if user.is_authenticated %}
+        <a href="{% url 'create_swap' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>Create New Swap
+        </a>
+    {% else %}
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">
+            <i class="fas fa-user-plus me-2"></i>Get Started
+        </a>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+        </a>
+    {% endif %}
+</div>
+
+<!-- Available Skills Section -->
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-lightbulb me-2"></i>Available Skills
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    {% for skill in skills %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-code fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">{{ skill.name }}</h5>
+                    <p class="card-text text-muted">
+                        {{ skill.userprofile_set.count }} people have this skill
+                    </p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'create_swap' %}?skill={{ skill.id }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-exchange-alt me-1"></i>Request Swap
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="text-center">
+                <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No skills available yet</h4>
+                <p class="text-muted">Be the first to add your skills!</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Recent Activity Section -->
+{% if user.is_authenticated %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-clock me-2"></i>Recent Activity
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-paper-plane me-2"></i>Sent Requests
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for request in user.sent_requests.all|slice:":3" %}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <strong>{{ request.receiver.username }}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    {{ request.skill_offered.name }} ↔ {{ request.skill_requested.name }}
+                                </small>
+                            </div>
+                            <span class="status-badge status-{{ request.status }}">
+                                {{ request.status|title }}
+                            </span>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No sent requests yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-inbox me-2"></i>Received Requests
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for request in user.received_requests.all|slice:":3" %}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <strong>{{ request.sender.username }}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    {{ request.skill_offered.name }} ↔ {{ request.skill_requested.name }}
+                                </small>
+                            </div>
+                            <span class="status-badge status-{{ request.status }}">
+                                {{ request.status|title }}
+                            </span>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No received requests yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Features Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="mb-4 text-center">
+            <i class="fas fa-star me-2"></i>Why Choose Skill Swap?
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Connect</h5>
+                <p class="card-text">Find people with skills you want to learn and share your expertise.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Learn</h5>
+                <p class="card-text">Gain new skills through direct mentorship and hands-on experience.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-rocket fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">Grow</h5>
+                <p class="card-text">Build your network and advance your career through skill sharing.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

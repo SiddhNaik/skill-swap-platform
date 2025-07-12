@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - Skill Swap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-edit me-2"></i>Edit Profile
+                </h3>
+                <p class="text-muted mb-0">Update your profile information and skills</p>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:</h6>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.bio.id_for_label }}" class="form-label">
+                            <i class="fas fa-quote-left me-2"></i>Bio
+                        </label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.bio.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Tell others about yourself and your experience.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.skills.id_for_label }}" class="form-label">
+                            <i class="fas fa-lightbulb me-2"></i>Your Skills
+                        </label>
+                        {{ form.skills }}
+                        {% if form.skills.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.skills.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Select the skills you can teach to others. Hold Ctrl/Cmd to select multiple.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.linkedin.id_for_label }}" class="form-label">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn Profile
+                        </label>
+                        {{ form.linkedin }}
+                        {% if form.linkedin.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.linkedin.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.github.id_for_label }}" class="form-label">
+                            <i class="fab fa-github me-2"></i>GitHub Profile
+                        </label>
+                        {{ form.github }}
+                        {% if form.github.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in form.github.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Home
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    select[multiple] {
+        min-height: 150px;
+    }
+</style>
+{% endblock %} 

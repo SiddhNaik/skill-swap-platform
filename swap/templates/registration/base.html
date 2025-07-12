@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>Skill Swap</title></head>
+<body>
+<nav>
+  <a href="/">Home</a> |
+  {% if user.is_authenticated %}
+    <a href="/create_swap/">New Swap</a> |
+    <a href="/my_requests/">My Requests</a> |
+    <a href="/edit_profile/">Edit Profile</a> |
+    <a href="/add_resource/">Add Resource</a> |
+    <a href="/accounts/logout/">Logout</a>
+  {% else %}
+    <a href="/accounts/login/">Login</a> |
+    <a href="/register/">Register</a>
+  {% endif %}
+</nav>
+<hr>
+{% block content %}{% endblock %}
+</body>
+</html> 
