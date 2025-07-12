@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Resources Shared with Me{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="fas fa-gift me-2"></i>Resources Shared with Me
+                </h2>
+                <a href="{% url 'browse_resources' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Resources
+                </a>
+            </div>
+            
+            {% if shared_resources %}
+                <div class="row">
+                    {% for share in shared_resources %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0">{{ share.resource.title }}</h5>
+                                        <span class="badge bg-{% if share.resource.is_free %}success{% else %}warning{% endif %}">
+                                            {% if share.resource.is_free %}Free{% else %}Paid{% endif %}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="text-muted small mb-2">
+                                        <i class="fas fa-user me-1"></i>Shared by {{ share.from_user.username }}
+                                    </p>
+                                    
+                                    {% if share.resource.description %}
+                                        <p class="card-text small">{{ share.resource.description|truncatewords:20 }}</p>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">{{ share.resource.skill.name }}</span>
+                                        <small class="text-muted">{{ share.shared_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    
+                                    {% if share.message %}
+                                        <div class="mt-3 p-2 bg-light rounded">
+                                            <small class="text-muted">
+                                                <i class="fas fa-comment me-1"></i>{{ share.message }}
+                                            </small>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="mt-3">
+                                        <a href="{{ share.resource.url }}" target="_blank" class="btn btn-primary btn-sm me-2">
+                                            <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                                        </a>
+                                        <a href="{% url 'resource_detail' share.resource.id %}" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-info-circle me-1"></i>Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No resources shared with you yet</h4>
+                    <p class="text-muted">When other users share resources with you, they will appear here.</p>
+                    <a href="{% url 'browse_resources' %}" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i>Browse Resources
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

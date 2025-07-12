@@ -1,0 +1,184 @@
+(base) siddheshnaik@Siddheshs-MacBook-Pro Desktop % cd
+(base) siddheshnaik@Siddheshs-MacBook-Pro ~ % ls
+app.py					Downloads				Miniconda3-latest-MacOSX-arm64.sh	Pictures				webots-R2023b.dmg
+Applications				get-pip.py.				MovieBookingSystem			Public					workspace
+BE-Project				IdeaProjects				Movies					PycharmProjects
+class Test.java				Library					Music					scikit_learn_data
+Desktop					libs					nltk_data				Test.class
+Documents				miniconda3				package-lock.json			Untitled.ipynb
+(base) siddheshnaik@Siddheshs-MacBook-Pro ~ % cd Desktop 
+(base) siddheshnaik@Siddheshs-MacBook-Pro Desktop % ls
+Screenshot 2025-07-12 at 8.12.08 AM.png		Screenshot 2025-07-12 at 8.37.53 AM.png
+(base) siddheshnaik@Siddheshs-MacBook-Pro Desktop % cd skillswap
+cd: no such file or directory: skillswap
+(base) siddheshnaik@Siddheshs-MacBook-Pro Desktop % cd skillswap
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git remote add origin https://github.com/SiddhNaik/skill-swap-platform.git
+fatal: not a git repository (or any of the parent directories): .git
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git init
+Initialized empty Git repository in /Users/siddheshnaik/Desktop/skillSwap/.git/
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git remote add origin https://github.com/SiddhNaik/skill-swap-platform.git
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git add .
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git commit -m "Initial Django project setup"
+[main (root-commit) 575e14a] Initial Django project setup
+ Committer: Siddh <siddheshnaik@Siddheshs-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 .DS_Store
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin startproject skillswap .
+zsh: command not found: django-admin
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % python --version
+Python 3.12.4
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % python3 -m venv venv
+(base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % source venv/bin/activate
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % pip install django
+Collecting django
+  Downloading django-5.2.4-py3-none-any.whl.metadata (4.1 kB)
+Collecting asgiref>=3.8.1 (from django)
+  Downloading asgiref-3.9.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting sqlparse>=0.3.1 (from django)
+  Downloading sqlparse-0.5.3-py3-none-any.whl.metadata (3.9 kB)
+Downloading django-5.2.4-py3-none-any.whl (8.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.3/8.3 MB 7.4 MB/s eta 0:00:00
+Downloading asgiref-3.9.1-py3-none-any.whl (23 kB)
+Downloading sqlparse-0.5.3-py3-none-any.whl (44 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.4/44.4 kB 3.9 MB/s eta 0:00:00
+Installing collected packages: sqlparse, asgiref, django
+Successfully installed asgiref-3.9.1 django-5.2.4 sqlparse-0.5.3
+
+[notice] A new release of pip is available: 24.0 -> 25.1.1
+[notice] To update, run: pip install --upgrade pip
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin --version
+5.2.4
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin startproject skillswap .
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin startproject skillswap  
+CommandError: '/Users/siddheshnaik/Desktop/skillSwap/skillswap' already exists
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin startproject skillswap .
+CommandError: /Users/siddheshnaik/Desktop/skillSwap/manage.py already exists. Overlaying a project into an existing directory won't replace conflicting files.
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % django-admin startproject skillswap .
+CommandError: /Users/siddheshnaik/Desktop/skillSwap/manage.py already exists. Overlaying a project into an existing directory won't replace conflicting files.
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % python manage.py startapp swap
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % skillswap/settings.py
+zsh: permission denied: skillswap/settings.py
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code skillswap/settings.py
+zsh: command not found: code
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code .
+zsh: command not found: code
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code. 
+zsh: command not found: code.
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code 
+zsh: command not found: code
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % python manage.py startapp swap
+CommandError: 'swap' conflicts with the name of an existing Python module and cannot be used as an app name. Please try another name.
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % (venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % python manage.py startapp swap
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % skillswap/settings.py
+zsh: permission denied: skillswap/settings.py
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code skillswap/settings.py
+zsh: command not found: code
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code .
+zsh: command not found: code
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code.
+zsh: command not found: code.
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % code
+zsh: command not found: code
+(venv) (base) siddheshna                                                                   
+zsh: parse error near `('
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % ls -a
+.		..		.DS_Store	.git		manage.py	skillswap	swap		venv
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git remote -v
+origin	https://github.com/SiddhNaik/skill-swap-platform.git (fetch)
+origin	https://github.com/SiddhNaik/skill-swap-platform.git (push)
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .DS_Store
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	manage.py
+	skillswap/
+	swap/
+	venv/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(venv) (base) siddheshnaik@Siddheshs-MacBook-Pro skillswap % nano .gitignore
+
+  UW PICO 5.09                                                                                       File: .gitignore                                                                                       Modified  
+
+venv/
+.DS_Store
+__pycache__/
+*.pycG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+File Name to write : .gitignore                                                                                                                                                                                       
+^G Get Help                        ^T  To Files                                                                                                                                                                   
+^C Cancel                          TAB Complete                                                                                                                                                                   

@@ -247,8 +247,23 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'add_skill' %}">
+                                <i class="fas fa-lightbulb me-1"></i>Add Skill
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'edit_profile' %}">
                                 <i class="fas fa-user me-1"></i>Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'browse_resources' %}">
+                                <i class="fas fa-book-open me-1"></i>Browse Resources
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'shared_with_me' %}">
+                                <i class="fas fa-gift me-1"></i>Shared with Me
                             </a>
                         </li>
                     {% endif %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}Browse Learning Resources{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">
+                    <i class="fas fa-book-open me-2"></i>Learning Resources
+                </h2>
+                <a href="{% url 'add_resource' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Share Resource
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Search</label>
+                            <input type="text" name="search" class="form-control" 
+                                   value="{{ search_query }}" placeholder="Search resources...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Skill</label>
+                            <select name="skill" class="form-select">
+                                <option value="">All Skills</option>
+                                {% for skill in skills %}
+                                    <option value="{{ skill.id }}" {% if selected_skill == skill.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ skill.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Type</label>
+                            <select name="type" class="form-select">
+                                <option value="">All Types</option>
+                                {% for type_code, type_name in resource_types %}
+                                    <option value="{{ type_code }}" {% if selected_type == type_code %}selected{% endif %}>
+                                        {{ type_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Difficulty</label>
+                            <select name="difficulty" class="form-select">
+                                <option value="">All Levels</option>
+                                {% for level_code, level_name in difficulty_levels %}
+                                    <option value="{{ level_code }}" {% if selected_difficulty == level_code %}selected{% endif %}>
+                                        {{ level_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-1"></i>Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="row">
+        {% if resources %}
+            {% for resource in resources %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">{{ resource.title }}</h5>
+                                <span class="badge bg-{% if resource.is_free %}success{% else %}warning{% endif %}">
+                                    {% if resource.is_free %}Free{% else %}Paid{% endif %}
+                                </span>
+                            </div>
+                            
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-tag me-1"></i>{{ resource.skill.name }}
+                                <span class="ms-2">
+                                    <i class="fas fa-layer-group me-1"></i>{{ resource.get_resource_type_display }}
+                                </span>
+                            </p>
+                            
+                            {% if resource.description %}
+                                <p class="card-text">{{ resource.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-info">{{ resource.get_difficulty_level_display }}</span>
+                                <div class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= resource.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <small class="text-muted ms-1">({{ resource.total_ratings }})</small>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>{{ resource.added_by.username }}
+                                </small>
+                                <div>
+                                    <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt me-1"></i>Visit
+                                    </a>
+                                    <a href="{% url 'resource_detail' resource.id %}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-info-circle me-1"></i>Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No resources found</h4>
+                    <p class="text-muted">Try adjusting your search criteria or be the first to share a resource!</p>
+                    <a href="{% url 'add_resource' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Share Your First Resource
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

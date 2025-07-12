@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}{{ resource.title }} - Resource Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Resource Details -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-book me-2"></i>{{ resource.title }}
+                        </h4>
+                        <a href="{% url 'browse_resources' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{ resource.title }}</h5>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-tag me-1"></i>{{ resource.skill.name }}
+                                <span class="ms-3">
+                                    <i class="fas fa-layer-group me-1"></i>{{ resource.get_resource_type_display }}
+                                </span>
+                            </p>
+                            
+                            {% if resource.description %}
+                                <p class="card-text">{{ resource.description }}</p>
+                            {% endif %}
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-info me-2">{{ resource.get_difficulty_level_display }}</span>
+                                <span class="badge bg-{% if resource.is_free %}success{% else %}warning{% endif %} me-2">
+                                    {% if resource.is_free %}Free{% else %}Paid{% endif %}
+                                </span>
+                                <div class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= resource.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <small class="text-muted ms-1">({{ resource.total_ratings }} ratings)</small>
+                                </div>
+                            </div>
+                            
+                            <a href="{{ resource.url }}" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'share_resource' resource.id %}" class="btn btn-outline-primary btn-sm ms-2">
+                                    <i class="fas fa-share-alt me-1"></i>Share
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <small class="text-muted">
+                                <i class="fas fa-user me-1"></i>Shared by {{ resource.added_by.username }}<br>
+                                <i class="fas fa-calendar me-1"></i>{{ resource.created_at|date:"M d, Y" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rating Form -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>Rate this Resource
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user_rating %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-1"></i>
+                            You rated this resource {{ user_rating.rating }}/5 stars.
+                            <a href="{% url 'rate_resource' resource.id %}" class="btn btn-sm btn-outline-primary ms-2">
+                                Update Rating
+                            </a>
+                        </div>
+                    {% else %}
+                        <form method="post" action="{% url 'rate_resource' resource.id %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Your Rating</label>
+                                    <select name="rating" class="form-select" required>
+                                        <option value="">Select rating...</option>
+                                        <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+                                        <option value="4">⭐⭐⭐⭐ Very Good (4)</option>
+                                        <option value="3">⭐⭐⭐ Good (3)</option>
+                                        <option value="2">⭐⭐ Fair (2)</option>
+                                        <option value="1">⭐ Poor (1)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Comment (Optional)</label>
+                                    <textarea name="comment" class="form-control" rows="3" 
+                                              placeholder="Share your thoughts about this resource..."></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-star me-1"></i>Submit Rating
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Resource Stats -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Resource Stats</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Average Rating:</span>
+                        <strong>{{ resource.rating }}/5</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Ratings:</span>
+                        <strong>{{ resource.total_ratings }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Difficulty:</span>
+                        <strong>{{ resource.get_difficulty_level_display }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Type:</span>
+                        <strong>{{ resource.get_resource_type_display }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Ratings -->
+            {% if ratings %}
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-comments me-2"></i>Recent Reviews</h6>
+                    </div>
+                    <div class="card-body">
+                        {% for rating in ratings %}
+                            <div class="border-bottom pb-2 mb-2">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>{{ rating.user.username }}</strong>
+                                        <div class="text-warning">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= rating.rating %}
+                                                    <i class="fas fa-star fa-xs"></i>
+                                                {% else %}
+                                                    <i class="far fa-star fa-xs"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ rating.created_at|date:"M d" }}</small>
+                                </div>
+                                {% if rating.comment %}
+                                    <p class="small text-muted mb-0 mt-1">{{ rating.comment }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
